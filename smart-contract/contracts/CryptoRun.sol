@@ -11,11 +11,11 @@ contract CryptoRun is usingOraclize {
   /*
       VARIABLES - to describe the state of the contract
    */
-  // The address of the contract owner (Thomas), set when the contract is deployed
+  // The address of the contract owner (Steve), set when the contract is deployed
   address public ownerAddress = msg.sender;
-  // The address of BeCode, the non-profit beneficiary that will receive the funds.
-  // Setup at contract construction.
-  address public beCodeAddress;
+  // The address of Pelotonia, the non-profit beneficiary that will receive the funds.
+  // If they don't have one, then use ownerAddress.  Setup at contract construction.
+  address public ownerAddress;
   // The status of the challenge, initialized at deployment to 'ongoing'.
   // Other statuses are 'accomplished' and 'failed'
   string public challengeStatus = 'ongoing';
