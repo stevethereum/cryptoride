@@ -3,15 +3,15 @@ pragma solidity 0.4.21;
 // Import the Oraclize contract code so we can inherit from it
 import "github.com/oraclize/ethereum-api/oraclizeAPI.sol";
 
-contract CryptoRun is usingOraclize {
+contract CryptoRide is usingOraclize {
   /*
       VARIABLES - to describe the state of the contract
    */
   // The address of the contract owner (Thomas), set when the contract is deployed
   address public ownerAddress = msg.sender;
-  // The address of BeCode, the non-profit beneficiary that will receive the funds.
+  // The address of Pelotonia, the non-profit beneficiary that will receive the funds.
   // Setup at contract construction.
-  address public beCodeAddress;
+  address public PelotoniaAddress;
   // The status of the challenge, initialized at deployment to 'ongoing'.
   // Other statuses are 'accomplished' and 'failed'
   string public challengeStatus = 'ongoing';
@@ -20,7 +20,7 @@ contract CryptoRun is usingOraclize {
   // is implicitly available under the name 'balance'. However here, since we
   // need to query an external Oracle (the GPS API), the contract needs to pay
   // a small amount of value at each query, and thus it consumes it own balance.
-  // This means that at the end of the challenge, the amount donated to BeCode
+  // This means that at the end of the challenge, the amount donated to Pelotonia
   // will be a little bit less that the sum of donations. To still be able to
   // keep track of the total amount donated, we record it with a dedicated
   // variable that we will increase gradually at each donation. Note that we
@@ -52,11 +52,11 @@ contract CryptoRun is usingOraclize {
   event LogChallengeOver();
   // The challenge has failed
   event LogChallengeFailed();
-  // The funds are available for BeCode to withdraw them (will only be broadcast
+  // The funds are available for Pelotonia to withdraw them (will only be broadcast
   // if the challenge is successful)
-  event LogDonationAvailableForBeCodeWithdrawal(uint totalDonation);
-  // BeCode has withdrawn the funds
-  event LogDonationWithdrawnByBeCode(address beCodeAddress, uint totalDonation);
+  event LogDonationAvailableForPelotoniaWithdrawal(uint totalDonation);
+  // Pelotonia has withdrawn the funds
+  event LogDonationWithdrawnByPelotonia(address PelotoniaAddress, uint totalDonation);
   // The funds are available for the donors to withdraw (will only be broadcast
   // if the challenge has failed)
   event LogDonationsAvailableForDonorsWithdrawal(uint totalDonation);
@@ -74,9 +74,9 @@ contract CryptoRun is usingOraclize {
   /*
       FUNCTION MODIFIERS - to set specific permissions for contract functions
   */
-  // For functions that can only be executed either the owner or by BeCode
+  // For functions that can only be executed either the owner or by Pelotonia
   modifier onlyOrganizers {
-      require((msg.sender == ownerAddress) || (msg.sender == beCodeAddress));
+      require((msg.sender == ownerAddress) || (msg.sender == PelotoniaAddress));
       _;
   }
   // For functions that can only be executed by the Oracle (the address method
@@ -112,8 +112,8 @@ contract CryptoRun is usingOraclize {
       FUNCTIONS - to implement the behavior of the contract
   */
   // The constructor functions, called when the contract is deployed
-  function CryptoRun(address _beCodeAddress) public {
-    beCodeAddress = _beCodeAddress;
+  function CryptoRide(address _PelotoniaAddress) public {
+    PelotoniaAddress = _PelotoniaAddress;
     emit LogChallengeStarted(msg.sender);
   }
 
@@ -140,7 +140,7 @@ contract CryptoRun is usingOraclize {
     } else {
         emit LogNewOraclizeQuery("Oraclize query sent, standing by...");
         // Production endpoint
-        oraclize_query("URL", "json(https://pgy2ax76f9.execute-api.eu-central-1.amazonaws.com/prod/CryptoRun).challenge_status");
+        oraclize_query("URL", "json(https://pgy2ax76f9.execute-api.eu-central-1.amazonaws.com/prod/CryptoRide).challenge_status");
     }
   }
 
@@ -159,7 +159,7 @@ contract CryptoRun is usingOraclize {
     } else if (keccak256(latestStatus) == keccak256('accomplished')) {
       challengeStatus = 'accomplished';
       emit LogChallengeAccomplished();
-      emit LogDonationAvailableForBeCodeWithdrawal(totalDonation);
+      emit LogDonationAvailableForPelotoniaWithdrawal(totalDonation);
     } else if (keccak256(latestStatus) == keccak256('failed')) {
       challengeStatus = 'failed';
       emit LogChallengeFailed();
@@ -168,16 +168,16 @@ contract CryptoRun is usingOraclize {
     }
   }
 
-  // The BeCode funds withdrawal function - note that we use a withdrawal pattern
+  // The Pelotonia funds withdrawal function - note that we use a withdrawal pattern
   // here (the transfer must be triggered by the funds claimer, and will not
   // be triggered automatically by the contract), as it is known to be much
   // safer (cf. Solidity documentation)
   function withDrawAllDonations() public onlyOrganizers whenAccomplished {
     // Broadcast withdrawal and closing events
-    emit LogDonationWithdrawnByBeCode(msg.sender, address(this).balance);
+    emit LogDonationWithdrawnByPelotonia(msg.sender, address(this).balance);
     emit LogChallengeOver();
-    // Transfer the remaning contract balance to BeCode
-    beCodeAddress.transfer(address(this).balance);
+    // Transfer the remaning contract balance to Pelotonia
+    PelotoniaAddress.transfer(address(this).balance);
   }
 
   // The individual donors withdrawal functions (so that they can withdraw

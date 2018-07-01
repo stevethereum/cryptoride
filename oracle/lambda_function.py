@@ -34,35 +34,14 @@ END_LAT_LONG_FIELD = 'end_latlng'
 # How the challenge must be accomplished (running, obviously). This is just a
 # filter to avoid counting any of Thomas' biking activities recorded on Strava
 # to accidentally trigger the challenge accomplishment.
-REQUIRED_ACTIVITY_TYPE = 'Run'
+REQUIRED_ACTIVITY_TYPE = 'Ride'
 # The latest day until which the challenge can be attempted - we take ten more
 # days vs the 'official' challenge day of May 20th to have some buffer in case
 # of unforeseen circumstances on the official day. The format is YYYY, MM, DD.
-LAST_CHALLENGE_DAY = datetime(2018, 5, 30)
+LAST_CHALLENGE_DAY = datetime(2018, 8, 02)
 # The minimum distance that must be run for the challenge to be accomplished,
 # expressed in meters (Strava's reference unit for distances).
-MIN_DISTANCE = 60000
-# The geographical areas within which the challenge must happen. We choose a broad
-# square around the Brussels region, that is bound by Sint-Pieters-Leeuw in the
-# South-West, and by Perk in the North-East. Check out on Google Map how these
-# localities nicely englobe the full Brussels area.
-# Specifically for the challenge to be considered accomplished, the start and
-# end points of the activity must be within this broad square.
-# (1) Sint-Pieters-Leeuw
-# https://www.google.be/maps/place/Sint-Pieters-Leeuw/@50.7886091,4.2083307,13z/data=!3m1!4b1!4m5!3m4!1s0x47c30fa9e98924bf:0x7e72a8992628f7ff!8m2!3d50.7797834!4d4.2436409?hl=en
-SW_BOUND_COORDS = {
-    'lat': 50.7886091,
-    'lon': 4.2083307
-}
-# (2) Perk
-# https://www.google.be/maps/place/1820+Perk/@50.9348927,4.4871652,15z/data=!3m1!4b1!4m5!3m4!1s0x47c3e767208ad4a1:0xb43ba0a4fd98a073!8m2!3d50.9348491!4d4.4959831?hl=en
-NE_BOUND_COORDS = {
-    'lat': 50.9348927,
-    'lon': 4.4871652
-}
-# (3) Resulting authorized ranges
-AUTHORIZED_LAT_RANGE  = [ SW_BOUND_COORDS['lat'], NE_BOUND_COORDS['lat']]
-AUTHORIZED_LON_RANGE = [ SW_BOUND_COORDS['lon'], NE_BOUND_COORDS['lon']]
+MIN_DISTANCE = 1000
 
 
 ############################

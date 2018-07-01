@@ -1,0 +1,5 @@
+var cryptoRide = artifacts.require("./cryptoRide.sol");
+
+module.exports = function(deployer) {
+    deployer.deploy(cryptoRide);
+};

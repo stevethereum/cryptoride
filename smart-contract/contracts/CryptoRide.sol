@@ -7,7 +7,7 @@ pragma solidity 0.4.21;
 /* import "github.com/oraclize/ethereum-api/oraclizeAPI.sol"; */
 import "./usingOraclize.sol";
 
-contract CryptoRun is usingOraclize {
+contract cryptoRide is usingOraclize {
   /*
       VARIABLES - to describe the state of the contract
    */
@@ -116,7 +116,7 @@ contract CryptoRun is usingOraclize {
       FUNCTIONS - to implement the behavior of the contract
   */
   // The constructor functions, called when the contract is deployed
-  function CryptoRun(address _PelotoniaAddress) public {
+  function cryptoRide(address _PelotoniaAddress) public {
     // The OAR variable assignment is for testing purposes only
     OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
     PelotoniaAddress = _PelotoniaAddress;
@@ -146,9 +146,9 @@ contract CryptoRun is usingOraclize {
     } else {
         emit LogNewOraclizeQuery("Oraclize query sent, standing by...");
         // Production endpoint
-        // oraclize_query("URL", "json(https://pgy2ax76f9.execute-api.eu-central-1.amazonaws.com/prod/CryptoRun).challenge_status");
+        // oraclize_query("URL", "json(https://pgy2ax76f9.execute-api.eu-central-1.amazonaws.com/prod/cryptoRide).challenge_status");
         // Test endpoint
-        oraclize_query("URL", "json(https://pgy2ax76f9.execute-api.eu-central-1.amazonaws.com/test/CryptoRunTest).challenge_status");
+        oraclize_query("URL", "json(https://pgy2ax76f9.execute-api.eu-central-1.amazonaws.com/test/cryptoRideTest).challenge_status");
     }
   }
 
