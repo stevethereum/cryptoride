@@ -89,17 +89,17 @@ contract CryptoRide is usingOraclize {
   // Note that pure string comparison is not yet supported in Solidity and
   // one has to hash them first then compare their hashes
   modifier whenOngoing {
-      require(keccak256(challengeStatus) == keccak256('ongoing'));
+      require(uint256(keccak256(challengeStatus)) == uint256(keccak256('ongoing')));
       _;
   }
   // For functions that can only be executed when the challenge is accomplished
   modifier whenAccomplished {
-      require(keccak256(challengeStatus) == keccak256('accomplished'));
+      require(uint256(keccak256(challengeStatus)) == uint256(keccak256('accomplished')));
       _;
   }
   // For functions that can only be executed when the challenge is failed
   modifier whenFailed {
-      require(keccak256(challengeStatus) == keccak256('failed'));
+      require(uint256(keccak256(challengeStatus)) == uint256(keccak256('failed')));
       _;
   }
   // Pausable behavior - we implement only the not paused modifier
@@ -153,14 +153,14 @@ contract CryptoRide is usingOraclize {
     emit LogNewOraclizeCallback(_queryId);
     emit LogChallengeStatusRefreshed(latestStatus);
 
-    if (keccak256(latestStatus) == keccak256('ongoing')) {
+    if (uint256(keccak256(latestStatus)) == uint256(keccak256('ongoing'))) {
       challengeStatus = 'ongoing';
       emit LogChallengeOngoing();
-    } else if (keccak256(latestStatus) == keccak256('accomplished')) {
+    } else if (uint256(keccak256(latestStatus)) == uint256(keccak256('accomplished'))) {
       challengeStatus = 'accomplished';
       emit LogChallengeAccomplished();
       emit LogDonationAvailableForPelotoniaWithdrawal(totalDonation);
-    } else if (keccak256(latestStatus) == keccak256('failed')) {
+    } else if (uint256(keccak256(latestStatus)) == uint256(keccak256('failed'))) {
       challengeStatus = 'failed';
       emit LogChallengeFailed();
     } else {
